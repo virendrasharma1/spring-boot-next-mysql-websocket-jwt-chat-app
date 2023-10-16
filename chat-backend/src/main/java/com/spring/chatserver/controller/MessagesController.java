@@ -1,13 +1,9 @@
 package com.spring.chatserver.controller;
 
 
-import com.spring.chatserver.dto.CurrentUser;
-import com.spring.chatserver.dto.MessageSummaryDto;
-import com.spring.chatserver.dto.MessagesDto;
-import com.spring.chatserver.dto.UserDto;
+import com.spring.chatserver.dto.*;
 import com.spring.chatserver.service.MessagesService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,6 +32,11 @@ public class MessagesController {
     public ResponseEntity<MessagesDto> postMessage(@CurrentUser UserDto loggedInUser, @RequestBody MessagesDto messagesDto) {
         MessagesDto savedMessagesDto = messagesService.postMessage(loggedInUser, messagesDto);
         return ResponseEntity.ok().body(savedMessagesDto);
+    }
+
+    @PutMapping("/read")
+    public void markMessagesReadForUsers(@CurrentUser UserDto user, @RequestBody UpdateMessageStatusDto updateMessageStatusDto) {
+        messagesService.markMessagesReadForUsers(user.getUserId(), updateMessageStatusDto);
     }
 
 }

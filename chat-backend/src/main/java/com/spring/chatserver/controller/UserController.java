@@ -22,6 +22,7 @@ public class UserController {
 
     @GetMapping("")
     public ResponseEntity<UserDto> getUserDetails(@CurrentUser UserDto user) {
+        System.out.println(user);
         return ResponseEntity.ok().body(user);
     }
 

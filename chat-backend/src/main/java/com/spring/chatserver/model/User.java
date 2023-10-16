@@ -11,8 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 
 @Setter
 @Getter
@@ -27,17 +25,17 @@ public class User implements UserDetails {
     @Column(name = "user_id", columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
-    @Column(name = "user_name", length = 64)
     @NotNull
+    @Column(name = "username", length = 64)
     private String username;
 
 
-    @Column(name = "name", length = 64)
     @NotNull
+    @Column(name = "name", length = 64)
     private String name;
 
-    @Column(name = "user_password", length = 256)
     @NotNull
+    @Column(name = "user_password", length = 256)
     private String password;
 
     public User(Long id, String name, String username, String password) {

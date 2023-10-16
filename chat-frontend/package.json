@@ -11,6 +11,7 @@
   "dependencies": {
     "@stomp/stompjs": "^7.0.0",
     "axios": "^1.5.1",
+    "lodash": "^4.17.21",
     "next": "latest",
     "react": "latest",
     "react-autosuggest": "^10.1.0",

@@ -97,4 +97,19 @@ export const messagesAPI = {
             return error.response;
         }
     },
+    updateClientMessageStatus: async (latestMessageUserId) => {
+        const token = window.localStorage.getItem("token");
+
+        try {
+            const response = await axios.put(`${SERVER_BASE_URL}/message/read`, {chatRecipientId: latestMessageUserId}, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            });
+            return response.data;
+        } catch (error) {
+            return error.response;
+        }
+    },
 };

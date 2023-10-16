@@ -9,9 +9,11 @@ import lombok.*;
 @AllArgsConstructor
 public class MessageSummaryDto {
     private Long userId;
-    private Long chatRecipientId;
+    private Long correspondUserId;
     private Long messageId;
     private String chatRecipientName;
     private String message;
     private String status;
+    private Long latestMessageUserId;
+
 }

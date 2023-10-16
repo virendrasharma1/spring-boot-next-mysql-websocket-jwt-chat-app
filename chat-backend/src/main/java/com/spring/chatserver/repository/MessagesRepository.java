@@ -4,6 +4,7 @@ import com.spring.chatserver.model.Messages;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,8 @@ public interface MessagesRepository extends JpaRepository<Messages, String> {
             "    MAX(m.message_id) AS latest_message_id, " +
             "    u.name AS user_name, " +
             "    (SELECT message FROM messages WHERE message_id = MAX(m.message_id) LIMIT 1) AS message, " +
-            "     (SELECT status FROM messages WHERE message_id = MAX(m.message_id) LIMIT 1) AS status " +
+            "     (SELECT status FROM messages WHERE message_id = MAX(m.message_id) LIMIT 1) AS status, " +
+            "    (SELECT sent_by FROM messages WHERE message_id = MAX(m.message_id) LIMIT 1) AS sent_by " +
             "FROM " +
             "    messages m " +
             "JOIN " +
@@ -36,10 +38,15 @@ public interface MessagesRepository extends JpaRepository<Messages, String> {
             "    END," +
             "    u.name " +
             "ORDER BY " +
-            "    latest_message_id",
+            "    latest_message_id desc",
             nativeQuery = true)
     Page<Object[]> getUserDistinctMessages(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT m  FROM Messages m WHERE (m.sentBy.id = :loggedInUserId AND m.sentTo.id = :chatRecipientId) OR (m.sentBy.id = :chatRecipientId AND m.sentTo.id = :loggedInUserId) ORDER BY m.id DESC")
     List<Messages> getUserMessagesWithUser(@Param("loggedInUserId") Long loggedInUserId, @Param("chatRecipientId") Long chatRecipientId, Pageable paginationObject);
+
+    @Modifying
+    @Query("UPDATE Messages m SET status = 'R' WHERE m.sentBy.id = :chatRecipientId AND m.sentTo.id = :loggedInUserId AND status = 'U'")
+    void markMessagesReadForUsers(@Param("loggedInUserId") Long loggedInUserId, @Param("chatRecipientId") Long chatRecipientId);
+
 }

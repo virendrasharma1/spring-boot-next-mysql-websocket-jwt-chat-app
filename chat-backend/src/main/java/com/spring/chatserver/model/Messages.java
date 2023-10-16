@@ -18,22 +18,22 @@ public class Messages {
     @Column(name = "message_id", columnDefinition = "BIGINT UNSIGNED")
     private Long id;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sent_by", nullable = false, insertable=true, updatable=false)
-    @NotNull
     private User sentBy;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "sent_to", nullable = false, insertable = true, updatable = false)
-    @NotNull
     private User sentTo;
 
-    @Column(name = "message", length = 256)
     @NotNull
+    @Column(name = "message", length = 256)
     private String message;
 
-    @Column(name = "status", length = 1)
     @NotNull
+    @Column(name = "status", length = 1)
     private String status;
 
     public Messages(Long id, User sentBy, User sentTo, String message, String status) {
